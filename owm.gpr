@@ -1,0 +1,23 @@
+with "gnatcoll";
+with "aws";
+with "si_units_lib";
+
+project OWM is
+
+   for Source_Dirs use ("src", "src/linux", "src/util", "test");
+   for Object_Dir use "obj";
+   for Main use ("main_owm_test.adb");
+
+   package Builder is
+      for Switches ("ada") use ("-s", "-j0", "-k");
+   end Builder;
+
+   package Compiler is
+      for Switches ("ada") use ("-gnatVn", "-gnatw.N.V.Y.a.b.c.d.e.f.g.h.i.j.k.l.m.o.p.q.r.s.t.u.w.x.zcdfghijklmopqrtuvwxyz", "-gnaty3ABOSabcdefhiklnoprstux", "-O2", "-g", "-gnat12");
+   end Compiler;
+
+   package Pretty_Printer is
+      for Default_Switches ("ada") use ("-i2");
+   end Pretty_Printer;
+
+end OWM;
