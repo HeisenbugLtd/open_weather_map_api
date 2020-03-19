@@ -1,4 +1,13 @@
 --------------------------------------------------------------------------------
+--  Copyright (C) 2020 by Heisenbug Ltd. (gh+owm@heisenbug.eu)
+--
+--  This work is free. You can redistribute it and/or modify it under the
+--  terms of the Do What The Fuck You Want To Public License, Version 2,
+--  as published by Sam Hocevar. See the LICENSE file for more details.
+--------------------------------------------------------------------------------
+pragma License (Unrestricted);
+
+--------------------------------------------------------------------------------
 --  Open_Weather_Map.City_Ids
 --
 --  Provides the Ada language version of city Ids.
@@ -7,9 +16,7 @@
 --  from <http://bulk.openwathermap.org/sample/city.list.json.gz>).
 --------------------------------------------------------------------------------
 
-package Open_Weather_Map.City_Ids with
-  SPARK_Mode => Off
-is
+package Open_Weather_Map.City_Ids is
 
    package Mexico is
       --  Mexico/Guerrero (B. smithii)

@@ -1,12 +1,19 @@
 --------------------------------------------------------------------------------
+--  Copyright (C) 2020 by Heisenbug Ltd. (gh+owm@heisenbug.eu)
+--
+--  This work is free. You can redistribute it and/or modify it under the
+--  terms of the Do What The Fuck You Want To Public License, Version 2,
+--  as published by Sam Hocevar. See the LICENSE file for more details.
+--------------------------------------------------------------------------------
+pragma License (Unrestricted);
+
+--------------------------------------------------------------------------------
 --  Open_Weather_Map.API.Service.Utilities
 --
 --  Provides several utility functions.
 --------------------------------------------------------------------------------
 
-private package Open_Weather_Map.API.Service.Utilities with
-  SPARK_Mode => Off
-is
+private package Open_Weather_Map.API.Service.Utilities is
 
    function Has_Coord_Fields
      (Coordinates : in GNATCOLL.JSON.JSON_Value) return Boolean;

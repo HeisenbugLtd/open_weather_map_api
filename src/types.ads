@@ -1,5 +1,13 @@
+--------------------------------------------------------------------------------
+--  Copyright (C) 2020 by Heisenbug Ltd. (gh+owm@heisenbug.eu)
+--
+--  This work is free. You can redistribute it and/or modify it under the
+--  terms of the Do What The Fuck You Want To Public License, Version 2,
+--  as published by Sam Hocevar. See the LICENSE file for more details.
+--------------------------------------------------------------------------------
+pragma License (Unrestricted);
+
 package Types with
-  SPARK_Mode   => On,
   Pure         => True,
   Remote_Types => True
 is
@@ -7,9 +15,9 @@ is
    type Scalar is delta 1.0 / 2 ** 32 range -2.0 ** 15 .. 2.0 ** 15
      with Small => 1.0 / 2 ** 32;
 
-   type Degree is new Scalar range -180.0 ..  180.0; -- unit: �
-   subtype Latitude  is Types.Degree range  -90.0 ..  90.0; --  90캳 ..  90캮
-   subtype Longitude is Types.Degree range -180.0 .. 180.0; -- 180캷 .. 180캞
+   type Degree is new Scalar range -180.0 ..  180.0; -- unit: 째
+   subtype Latitude  is Types.Degree range  -90.0 ..  90.0; --  90째S ..  90째N
+   subtype Longitude is Types.Degree range -180.0 .. 180.0; -- 180째W .. 180째E
 
    type Humidity  is new Scalar range 0.0 ..  100.0; --  unit: %
    type Intensity is new Scalar range 0.0 ..    1.0 + Scalar'Small;
@@ -30,12 +38,12 @@ is
    --  lowest points.
    --  The temperature can be used in different contexts, so we need a rather
    --  large range.  For weather data we should at least support the
-   --  temperature range found on Earth, this is roughly -90.0 캜 to 56.0 캜 for
-   --  the air temperature, but ground temperatures of 94 캜 have been recorded.
-   --  Hence, to be on the safe side, let's support -150.0 to +150.0 캜.
+   --  temperature range found on Earth, this is roughly -90.0 째C to 56.0 째C for
+   --  the air temperature, but ground temperatures of 94 째C have been recorded.
+   --  Hence, to be on the safe side, let's support -150.0 to +150.0 째C.
 
    type Celsius is new Scalar range Celsius_First .. Celsius_Last;
-   --  Scale from -150 캜 to 150 캜.
+   --  Scale from -150 째C to 150 째C.
 
    Kelvin_First : constant Scalar := Zero_Celsius + Celsius_First;
    Kelvin_Last  : constant Scalar := Zero_Celsius + Celsius_Last;

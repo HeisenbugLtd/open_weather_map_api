@@ -10,4 +10,8 @@ Implemented services:
 
 ## Dependencies:
 
-Requires GNATCOLL (for JSON parsing), AWS (for web services), and SI_Units (for formatting).
+Requires
+
+* GNATCOLL (for JSON parsing and logging)
+* AWS (for web services)
+* SI_Units (for formatting)

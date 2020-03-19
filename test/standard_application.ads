@@ -1,9 +1,16 @@
+--------------------------------------------------------------------------------
+--  Copyright (C) 2020 by Heisenbug Ltd. (gh+owm@heisenbug.eu)
+--
+--  This work is free. You can redistribute it and/or modify it under the
+--  terms of the Do What The Fuck You Want To Public License, Version 2,
+--  as published by Sam Hocevar. See the LICENSE file for more details.
+--------------------------------------------------------------------------------
+pragma License (Unrestricted);
+
 limited with Ada.Real_Time;
 private with GNATCOLL.Memory;
 
-package Standard_Application with
-  SPARK_Mode => Off
-is
+package Standard_Application is
 
    type T is abstract tagged limited private;
 

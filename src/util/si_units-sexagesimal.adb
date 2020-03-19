@@ -1,6 +1,13 @@
-package body SI_Units.Sexagesimal with
-  SPARK_Mode => Off
-is
+--------------------------------------------------------------------------------
+--  Copyright (C) 2020 by Heisenbug Ltd. (gh+owm@heisenbug.eu)
+--
+--  This work is free. You can redistribute it and/or modify it under the
+--  terms of the Do What The Fuck You Want To Public License, Version 2,
+--  as published by Sam Hocevar. See the LICENSE file for more details.
+--------------------------------------------------------------------------------
+pragma License (Unrestricted);
+
+package body SI_Units.Sexagesimal is
 
    package Fixed_IO is new Ada.Text_IO.Fixed_IO (Num => Degree);
 

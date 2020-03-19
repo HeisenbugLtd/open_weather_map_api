@@ -1,13 +1,20 @@
 --------------------------------------------------------------------------------
+--  Copyright (C) 2020 by Heisenbug Ltd. (gh+owm@heisenbug.eu)
+--
+--  This work is free. You can redistribute it and/or modify it under the
+--  terms of the Do What The Fuck You Want To Public License, Version 2,
+--  as published by Sam Hocevar. See the LICENSE file for more details.
+--------------------------------------------------------------------------------
+pragma License (Unrestricted);
+
+--------------------------------------------------------------------------------
 --  Open_Weather_Map.API.Query (private)
 --
 --  Provides the abstract tagged type implementing a context where query timings
 --  are stored.
 --------------------------------------------------------------------------------
 
-private package Open_Weather_Map.API.Query with
-  SPARK_Mode => Off
-is
+private package Open_Weather_Map.API.Query is
 
    -----------------------------------------------------------------------------
    --  Abstract context base type, and its primitive operations.

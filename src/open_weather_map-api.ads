@@ -1,4 +1,13 @@
 --------------------------------------------------------------------------------
+--  Copyright (C) 2020 by Heisenbug Ltd. (gh+owm@heisenbug.eu)
+--
+--  This work is free. You can redistribute it and/or modify it under the
+--  terms of the Do What The Fuck You Want To Public License, Version 2,
+--  as published by Sam Hocevar. See the LICENSE file for more details.
+--------------------------------------------------------------------------------
+pragma License (Unrestricted);
+
+--------------------------------------------------------------------------------
 --  Open_Weather_Map.API
 --
 --  Publicly visible interface to the openweathermap.org API.
@@ -21,9 +30,7 @@
 limited with GNATCOLL.JSON;
 with Open_Weather_Map.Client;
 
-package Open_Weather_Map.API with
-  SPARK_Mode => Off
-is
+package Open_Weather_Map.API is
 
    -----------------------------------------------------------------------------
    --  The abstract base class for the API.  This is the official interface, all

@@ -1,11 +1,18 @@
+--------------------------------------------------------------------------------
+--  Copyright (C) 2020 by Heisenbug Ltd. (gh+owm@heisenbug.eu)
+--
+--  This work is free. You can redistribute it and/or modify it under the
+--  terms of the Do What The Fuck You Want To Public License, Version 2,
+--  as published by Sam Hocevar. See the LICENSE file for more details.
+--------------------------------------------------------------------------------
+pragma License (Unrestricted);
+
 with Ada.Environment_Variables;
 with Ada.Text_IO;
 with Ada.Unchecked_Deallocation;
 with GNATCOLL.JSON;
 
-package body Open_Weather_Map.Client with
-  SPARK_Mode => Off
-is
+package body Open_Weather_Map.Client is
 
    My_Debug : constant not null GNATCOLL.Traces.Trace_Handle :=
      GNATCOLL.Traces.Create (Unit_Name => "OWM.CLIENT");

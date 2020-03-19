@@ -1,3 +1,12 @@
+--------------------------------------------------------------------------------
+--  Copyright (C) 2020 by Heisenbug Ltd. (gh+owm@heisenbug.eu)
+--
+--  This work is free. You can redistribute it and/or modify it under the
+--  terms of the Do What The Fuck You Want To Public License, Version 2,
+--  as published by Sam Hocevar. See the LICENSE file for more details.
+--------------------------------------------------------------------------------
+pragma License (Unrestricted);
+
 with Standard_Application;
 
 private with Ada.Containers.Indefinite_Vectors;
@@ -5,9 +14,7 @@ private with Open_Weather_Map.API;
 private with Open_Weather_Map.Client;
 private with Open_Weather_Map.Configuration;
 
-package Open_Weather_Map.Application with
-  SPARK_Mode => Off
-is
+package Open_Weather_Map.Application is
 
    type T is new Standard_Application.T with private;
 
