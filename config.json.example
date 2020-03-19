@@ -1,0 +1,6 @@
+{
+    "proxy.url"      : "The URL of your proxy, if applicable. If not needed, leave empty.",
+    "proxy.user"     : "Proxy user name if proxy requires login.",
+    "proxy.password" : "Proxy password if proxy requires login.",
+    "api.key"        : "Your API key (must be exactly 32 characters)"
+}
