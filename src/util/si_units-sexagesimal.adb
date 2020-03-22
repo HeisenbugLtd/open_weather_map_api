@@ -13,6 +13,9 @@ package body SI_Units.Sexagesimal is
 
    package body Latitude is
 
+      --------------------------------------------------------------------------
+      --  Image
+      --------------------------------------------------------------------------
       function Image (L   : in T;
                       Aft : in Ada.Text_IO.Field := Default_Aft) return String
       is
@@ -33,6 +36,9 @@ package body SI_Units.Sexagesimal is
 
    package body Longitude is
 
+      --------------------------------------------------------------------------
+      --  Image
+      --------------------------------------------------------------------------
       function Image (L   : in T;
                       Aft : in Ada.Text_IO.Field := Default_Aft) return String
       is

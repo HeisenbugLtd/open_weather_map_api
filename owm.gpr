@@ -16,6 +16,11 @@ project OWM is
       for Switches ("ada") use ("-gnatVn", "-gnatw.N.V.Y.a.b.c.d.e.f.g.h.i.j.k.l.m.o.p.q.r.s.t.u.w.x.zcdfghijklmopqrtuvwxyz", "-gnaty3ABOSabcdefhiklnoprstux", "-O2", "-g", "-gnat12");
    end Compiler;
 
+   package Documentation is
+      for Doc_Pattern use "^%";
+      --  Consider comments beginning with "--%" to be documentation.
+   end Documentation;
+
    package Pretty_Printer is
       for Default_Switches ("ada") use ("-i2");
    end Pretty_Printer;

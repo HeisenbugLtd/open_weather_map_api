@@ -18,8 +18,14 @@ package Signal_Handlers is
      Interrupt_Priority => System.Interrupt_Priority'First
    is
 
+      --------------------------------------------------------------------------
+      --  Wait
+      --------------------------------------------------------------------------
       entry Wait;
 
+      --------------------------------------------------------------------------
+      --  Handle
+      --------------------------------------------------------------------------
       procedure Handle with
         Interrupt_Handler => True,
         Attach_Handler    => Ada.Interrupts.Names.SIGINT;

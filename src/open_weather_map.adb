@@ -31,6 +31,9 @@ package body Open_Weather_Map is
            else Ada.Directories.Current_Directory),
         Name                 => App_Dir_Name);
 
+   -----------------------------------------------------------------------------
+   --  Application_Directory
+   -----------------------------------------------------------------------------
    function Application_Directory return String is
    begin
       return Full_Application_Directory;

@@ -19,6 +19,9 @@ package body Open_Weather_Map.Configuration is
    Config_Ext  : constant String := "json";
    --  Full configuration file name: "$HOME/.openweathermap/config.json".
 
+   -----------------------------------------------------------------------------
+   --  Initialize
+   -----------------------------------------------------------------------------
    procedure Initialize (Self : out T) is
    begin
       My_Debug.all.Trace (Message => "Initialize");
@@ -31,6 +34,9 @@ package body Open_Weather_Map.Configuration is
               Extension            => Config_Ext));
    end Initialize;
 
+   -----------------------------------------------------------------------------
+   --  Read_Config
+   -----------------------------------------------------------------------------
    procedure Read_Config (Self      : in out T;
                           From_File : in     String) is
       Content : Ada.Strings.Unbounded.Unbounded_String;

@@ -8,14 +8,15 @@
 pragma License (Unrestricted);
 
 --------------------------------------------------------------------------------
---  Open_Weather_Map.City_Ids
+--% @summary
+--% Open_Weather_Map.City_Ids
 --
---  Provides the Ada language version of city Ids.
+--% @description
+--% Provides the Ada language version of city Ids.
 --
 --  Please note that this list may change, the actual list can be downloaded
 --  from <http://bulk.openwathermap.org/sample/city.list.json.gz>).
 --------------------------------------------------------------------------------
-
 package Open_Weather_Map.City_Ids is
 
    package Mexico is

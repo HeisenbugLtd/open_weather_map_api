@@ -21,8 +21,11 @@ package body Open_Weather_Map.API.Service is
 
    use type Ada.Real_Time.Time;
 
+   -----------------------------------------------------------------------------
+   --  Initialize
+   -----------------------------------------------------------------------------
    procedure Initialize
-     (Context            :    out   T;
+     (Self               :    out   T;
       Configuration      : in       GNATCOLL.JSON.JSON_Value;
       Connection         : not null Client.T_Access;
       Max_Cache_Interval : in       Ada.Real_Time.Time_Span := Default_Cache_Interval;
@@ -31,11 +34,11 @@ package body Open_Weather_Map.API.Service is
       My_Debug.all.Trace (Message => "Initialize");
 
       --  inherited initialization
-      Query.T (Context).Initialize;
+      Query.T (Self).Initialize;
 
       --  initialization of added fields
-      Context.Server_Connection := Connection;
-      Context.Cache_Interval    := Max_Cache_Interval;
+      Self.Server_Connection := Connection;
+      Self.Cache_Interval    := Max_Cache_Interval;
 
       --  initialization of added fields.
       Get_API_Key :
@@ -44,7 +47,7 @@ package body Open_Weather_Map.API.Service is
          --  Force type predicate check on API key type.
       begin
          My_Debug.all.Trace (Message => "Initialize: Loading API key...");
-         Context.Key := Configuration.Get (Field => Config_Names.Field_API_Key);
+         Self.Key := Configuration.Get (Field => Config_Names.Field_API_Key);
          My_Debug.all.Trace (Message => "Initialize: API key loaded.");
       exception
          when E : others =>
@@ -56,22 +59,26 @@ package body Open_Weather_Map.API.Service is
                Item =>
                   "Warning: Missing or invalid JSON data, " &
                   "API key configuration is invalid.");
-            Context.Key := Invalid_API_Key;
+            Self.Key := Invalid_API_Key;
             --  Force API key to invalid, yet satisfy the type predicate.
       end Get_API_Key;
 
-      Context.Service := For_API_Service;
+      Self.Service := For_API_Service;
    end Initialize;
 
-   overriding procedure Perform_Query (Context : in out T;
-                                       Current : in out Data_Set) is
+   -----------------------------------------------------------------------------
+   --  Perform_Query
+   -----------------------------------------------------------------------------
+   overriding procedure Perform_Query (Self    : in out T;
+                                       Current : in out Data_Set)
+   is
       Now : constant Ada.Real_Time.Time := Ada.Real_Time.Clock;
-      URI : constant String := T'Class (Context).Service_URI;
+      URI : constant String := T'Class (Self).Service_URI;
    begin
       My_Debug.all.Trace (Message => "Query");
 
       if
-        T'Class (Context).Last_Query + T'Class (Context).Cache_Interval < Now
+        T'Class (Self).Last_Query + T'Class (Self).Cache_Interval < Now
       then
          My_Debug.all.Trace
            (Message => "Query: Firing query: """ & API_Host & URI & """");
@@ -81,8 +88,8 @@ package body Open_Weather_Map.API.Service is
             Response : AWS.Response.Data;
          begin
             AWS.Client.Get
-              (Connection => Context.Server_Connection.all.Connection.all,
-               URI        => URI & "&appid=" & T'Class (Context).Key,
+              (Connection => Self.Server_Connection.all.Connection.all,
+               URI        => URI & "&appid=" & T'Class (Self).Key,
                Result     => Response);
 
             declare
@@ -95,7 +102,7 @@ package body Open_Weather_Map.API.Service is
                        "Query: Succeeded (" &
                        AWS.Messages.Image (S => Status_Code) & "/" &
                        AWS.Messages.Reason_Phrase (S => Status_Code) & ")");
-                  T'Class (Context).Set_Last_Query (Value => Now);
+                  T'Class (Self).Set_Last_Query (Value => Now);
                   --  Mark retrieval of data.
 
                   --  Decode retrieved JSON data.
@@ -115,7 +122,7 @@ package body Open_Weather_Map.API.Service is
                      begin
                         if Read_Result.Success then
                            Current :=
-                             T'Class (Context).Decode_Response
+                             T'Class (Self).Decode_Response
                                (Root => Read_Result.Value);
                         else
                            Report_Error :
@@ -155,22 +162,29 @@ package body Open_Weather_Map.API.Service is
       end if;
    end Perform_Query;
 
-   function Service_URI (Context : in T) return String is
+   -----------------------------------------------------------------------------
+   --  Service_URI
+   -----------------------------------------------------------------------------
+   function Service_URI (This : in T) return String
+   is
       Result : constant String :=
-        API_Path & To_Service_Name (Context.Service) & Context.Parameters.URI_Format;
+        API_Path & To_Service_Name (This.Service) & This.Parameters.URI_Format;
    begin
       My_Debug.all.Trace (Message => "Service_URI: " & Result);
 
       return Result;
    end Service_URI;
 
+   -----------------------------------------------------------------------------
+   --  Set_Cache_Interval
+   -----------------------------------------------------------------------------
    procedure Set_Cache_Interval
-     (Context            : in out T;
+     (Self               : in out T;
       Max_Cache_Interval : in     Ada.Real_Time.Time_Span) is
    begin
       My_Debug.all.Trace (Message => "Set_Cache_Interval");
 
-      Context.Cache_Interval := Max_Cache_Interval;
+      Self.Cache_Interval := Max_Cache_Interval;
    end Set_Cache_Interval;
 
 end Open_Weather_Map.API.Service;

@@ -25,16 +25,25 @@ package body Open_Weather_Map.Application is
    Standard_Output : constant Ada.Text_IO.File_Type :=
      Ada.Text_IO.Standard_Output;
 
+   -----------------------------------------------------------------------------
+   --  Image
+   -----------------------------------------------------------------------------
    function Image is new
      SI_Units.Metric.Fixed_Image (Item        => Types.Humidity,
                                   Default_Aft => 1,
                                   Unit        => SI_Units.Names.Percent);
 
+   -----------------------------------------------------------------------------
+   --  Image
+   -----------------------------------------------------------------------------
    function Image is new
      SI_Units.Metric.Fixed_Image (Item        => Types.Pressure'Base,
                                   Default_Aft => 1,
                                   Unit        => SI_Units.Names.Pascal);
 
+   -----------------------------------------------------------------------------
+   --  Image
+   -----------------------------------------------------------------------------
    function Image is new
      SI_Units.Metric.Fixed_Image
        (Item        => Types.Celsius,
@@ -44,6 +53,9 @@ package body Open_Weather_Map.Application is
    package Degrees is new SI_Units.Sexagesimal (Degree      => Types.Degree,
                                                 Default_Aft => 3);
 
+   -----------------------------------------------------------------------------
+   --  Initialize
+   -----------------------------------------------------------------------------
    procedure Initialize (Self : in out T) is
    begin
       Standard_Application.T (Self).Initialize
@@ -93,19 +105,31 @@ package body Open_Weather_Map.Application is
               Previous_Data => (Valid => False)));
    end Initialize;
 
+   -----------------------------------------------------------------------------
+   --  Print
+   -----------------------------------------------------------------------------
    procedure Print (City_Name : in String) is
    begin
       Ada.Text_IO.Put (File => Standard_Output,
                        Item => ", data for """ & City_Name & """");
    end Print;
 
+   -----------------------------------------------------------------------------
+   --  Print
+   -----------------------------------------------------------------------------
    procedure Print (H : in Types.Humidity) is
    begin
       Ada.Text_IO.Put (File => Standard_Output,
                        Item => ", humidity: " & Image (Value => H));
    end Print;
 
+   -----------------------------------------------------------------------------
+   --  Print
+   -----------------------------------------------------------------------------
    procedure Print (P : in Types.Pressure) is
+      -----------------------------------------------------------------------------
+      --  Scale
+      -----------------------------------------------------------------------------
       function Scale is
         new SI_Units.Metric.Scaling.Fixed_Scale (Item => Types.Pressure'Base);
       use all type SI_Units.Metric.Scaling.Prefixes;
@@ -117,12 +141,18 @@ package body Open_Weather_Map.Application is
                                                 From_Prefix => Hecto)));
    end Print;
 
+   -----------------------------------------------------------------------------
+   --  Print
+   -----------------------------------------------------------------------------
    procedure Print (T : in Types.Celsius) is
    begin
       Ada.Text_IO.Put (File => Standard_Output,
                        Item => ", temperature: " & Image (Value => T));
    end Print;
 
+   -----------------------------------------------------------------------------
+   --  Print_Last_Update_On_Server
+   -----------------------------------------------------------------------------
    procedure Print_Last_Update_On_Server
      (Value     : in Ada.Calendar.Time;
       Time_Zone : in Ada.Calendar.Time_Zones.Time_Offset) is
@@ -133,6 +163,9 @@ package body Open_Weather_Map.Application is
                   Time_Zone => Time_Zone);
    end Print_Last_Update_On_Server;
 
+   -----------------------------------------------------------------------------
+   --  Print_Location
+   -----------------------------------------------------------------------------
    procedure Print_Location (Loc : in Geo_Coordinates) is
    begin
       Ada.Text_IO.Put
@@ -142,6 +175,9 @@ package body Open_Weather_Map.Application is
            Degrees.Longitude.Image (L => Loc.Longitude) & ")");
    end Print_Location;
 
+   -----------------------------------------------------------------------------
+   --  Print_Seconds_Since_Last_Query
+   -----------------------------------------------------------------------------
    procedure Print_Seconds_Since_Last_Query
      (Elapsed_Time : in Ada.Real_Time.Time_Span)
    is
@@ -159,6 +195,9 @@ package body Open_Weather_Map.Application is
                        Item => " seconds ago");
    end Print_Seconds_Since_Last_Query;
 
+   -----------------------------------------------------------------------------
+   --  Print_Time
+   -----------------------------------------------------------------------------
    procedure Print_Time (Value     : in Ada.Calendar.Time;
                          Time_Zone : in Ada.Calendar.Time_Zones.Time_Offset) is
    begin
@@ -169,6 +208,9 @@ package body Open_Weather_Map.Application is
            " local time)");
    end Print_Time;
 
+   -----------------------------------------------------------------------------
+   --  Print_Timestamp
+   -----------------------------------------------------------------------------
    procedure Print_Timestamp (Value : in Ada.Real_Time.Time_Span) is
    begin
       Ada.Text_IO.Put (File => Standard_Output,
@@ -200,6 +242,9 @@ package body Open_Weather_Map.Application is
                        Item => "] ");
    end Print_Timestamp;
 
+   -----------------------------------------------------------------------------
+   --  Shutdown
+   -----------------------------------------------------------------------------
    overriding procedure Shutdown (Self : in out T) is
    begin
       My_Debug.all.Trace (Message => "Shutdown");
@@ -208,6 +253,9 @@ package body Open_Weather_Map.Application is
       Standard_Application.T (Self).Shutdown;
    end Shutdown;
 
+   -----------------------------------------------------------------------------
+   --  Update_And_Report
+   -----------------------------------------------------------------------------
    procedure Update_And_Report (Self : in     T;
                                 Q    : in out Query_Data_Set) is
       use type Ada.Real_Time.Time;
@@ -254,6 +302,9 @@ package body Open_Weather_Map.Application is
       end if;
    end Update_And_Report;
 
+   -----------------------------------------------------------------------------
+   --  Work
+   -----------------------------------------------------------------------------
    overriding procedure Work (Self : in out T) is
    begin
       My_Debug.all.Trace (Message => "Work");

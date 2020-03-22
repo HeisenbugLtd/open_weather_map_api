@@ -14,30 +14,45 @@ package body GNATCOLL.JSON.Conversions is
                            Month => 1,
                            Day   => 1);
 
+   -----------------------------------------------------------------------------
+   --  To_Humidity
+   -----------------------------------------------------------------------------
    function To_Humidity (Value : in JSON_Value;
                          Field : in UTF8_String) return Types.Humidity is
    begin
       return Types.Humidity (To_Scalar (Value, Field));
    end To_Humidity;
 
+   -----------------------------------------------------------------------------
+   --  To_Latitude
+   -----------------------------------------------------------------------------
    function To_Latitude (Value : in JSON_Value;
                          Field : in UTF8_String) return Types.Latitude is
    begin
       return Types.Latitude (To_Scalar (Value, Field));
    end To_Latitude;
 
+   -----------------------------------------------------------------------------
+   --  To_Longitude
+   -----------------------------------------------------------------------------
    function To_Longitude (Value : in JSON_Value;
                           Field : in UTF8_String) return Types.Longitude is
    begin
       return Types.Longitude (To_Scalar (Value, Field));
    end To_Longitude;
 
+   -----------------------------------------------------------------------------
+   --  To_Pressure
+   -----------------------------------------------------------------------------
    function To_Pressure (Value : in JSON_Value;
                          Field : in UTF8_String) return Types.Pressure is
    begin
       return Types.Pressure (To_Scalar (Value, Field));
    end To_Pressure;
 
+   -----------------------------------------------------------------------------
+   --  To_Scalar
+   -----------------------------------------------------------------------------
    function To_Scalar (Value : in JSON_Value;
                        Field : in UTF8_String) return Types.Scalar is
       Field_Value : constant JSON_Value := Value.Get (Field);
@@ -52,12 +67,18 @@ package body GNATCOLL.JSON.Conversions is
       end case;
    end To_Scalar;
 
+   -----------------------------------------------------------------------------
+   --  To_Temperature
+   -----------------------------------------------------------------------------
    function To_Temperature (Value : in JSON_Value;
                             Field : in UTF8_String) return Types.Kelvin is
    begin
       return Types.Kelvin (To_Scalar (Value, Field));
    end To_Temperature;
 
+   -----------------------------------------------------------------------------
+   --  To_Time
+   -----------------------------------------------------------------------------
    function To_Time (Value : in JSON_Value;
                      Field : in UTF8_String) return Ada.Calendar.Time is
       use type Ada.Calendar.Time;
@@ -65,6 +86,9 @@ package body GNATCOLL.JSON.Conversions is
       return Unix_Epoch + Duration (Long_Integer'(Value.Get (Field)));
    end To_Time;
 
+   -----------------------------------------------------------------------------
+   --  To_Time_Offset
+   -----------------------------------------------------------------------------
    function To_Time_Offset
      (Value : in JSON_Value;
       Field : in UTF8_String) return Ada.Calendar.Time_Zones.Time_Offset is

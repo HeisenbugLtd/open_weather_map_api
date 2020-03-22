@@ -8,12 +8,13 @@
 pragma License (Unrestricted);
 
 --------------------------------------------------------------------------------
---  Open_Weather_Map.API.Service.Group
+--% @summary
+--% Open_Weather_Map.API.Service.Group
 --
---  Provides the query object implementing a group query (i.e. a list of Ids for
---  which weather information shall be retrieved).
+--% @description
+--% Provides the query object implementing a group query (i.e. a list of Ids for
+--% which weather information shall be retrieved).
 --------------------------------------------------------------------------------
-
 package Open_Weather_Map.API.Service.Group is
 
    -----------------------------------------------------------------------------
@@ -21,26 +22,52 @@ package Open_Weather_Map.API.Service.Group is
    -----------------------------------------------------------------------------
    type T is new Service.T with private;
 
+   -----------------------------------------------------------------------------
+   --  Initialize
+   -----------------------------------------------------------------------------
    procedure Initialize
-     (Context            :    out   T;
+     (Self               :    out   T;
       Configuration      : in       GNATCOLL.JSON.JSON_Value;
       Connection         : not null Client.T_Access;
       Max_Cache_Interval : in       Ada.Real_Time.Time_Span := Default_Cache_Interval;
       Ids                : in       Group_List);
-   --  Initializes the object.
-   --  Configuration is used to configure necessary internals (proxy server
-   --  etc.).
-   --  Connection is an access to the connection object to be used.
-   --  Max_Cache_Interval denotes the frequency of actual queries sent to the
-   --  server.
-   --  Ids is the list of location ids to be queried.
+   --% Initializes the group query instance.
+   --
+   --% @param Self
+   --% The instance of the group query to initialize.
+   --
+   --% @param Configuration
+   --% Used to configure necessary internals (proxy server etc.).
+   --
+   --% @param Connection
+   --% Access to the connection object to be used for client server
+   --% communication.
+   --
+   --% @param Max_Cache_Interval
+   --% Denotes the maximum frequency of actual queries sent to the server.
+   --
+   --% @param Ids
+   --% The list of location ids to be queried.
 
 private
 
    type T is new Service.T with null record;
 
+   -----------------------------------------------------------------------------
+   --  Decode_Response
+   -----------------------------------------------------------------------------
    overriding function Decode_Response
-     (Context : in T;
-      Root    : in GNATCOLL.JSON.JSON_Value) return Data_Set;
+     (Self : in T;
+      Root : in GNATCOLL.JSON.JSON_Value) return Data_Set;
+   --% Decodes a group query response.
+   --
+   --% @param Self
+   --% The group query instance.
+   --
+   --% @param Root
+   --% The root of the JSON response sent by the server.
+   --
+   --% @return
+   --% The data set decoded from the JSON data in Root.
 
 end Open_Weather_Map.API.Service.Group;

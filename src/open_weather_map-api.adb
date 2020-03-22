@@ -18,6 +18,9 @@ package body Open_Weather_Map.API is
    My_Debug : constant not null GNATCOLL.Traces.Trace_Handle :=
      GNATCOLL.Traces.Create (Unit_Name => "OWM.API");
 
+   -----------------------------------------------------------------------------
+   --  Create_Current_By_Coordinates
+   -----------------------------------------------------------------------------
    function Create_Current_By_Coordinates
      (Coordinates    : in Geo_Coordinates;
       Configuration  : in GNATCOLL.JSON.JSON_Value;
@@ -50,6 +53,9 @@ package body Open_Weather_Map.API is
       end return;
    end Create_Current_By_Coordinates;
 
+   -----------------------------------------------------------------------------
+   --  Create_Current_By_Group
+   -----------------------------------------------------------------------------
    function Create_Current_By_Group
      (Ids            : in Group_List;
       Configuration  : in GNATCOLL.JSON.JSON_Value;
@@ -82,6 +88,9 @@ package body Open_Weather_Map.API is
       end return;
    end Create_Current_By_Group;
 
+   -----------------------------------------------------------------------------
+   --  Create_Current_By_Id
+   -----------------------------------------------------------------------------
    function Create_Current_By_Id
      (Id             : in City_Id;
       Configuration  : in GNATCOLL.JSON.JSON_Value;

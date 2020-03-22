@@ -17,6 +17,9 @@ package body Open_Weather_Map.Client is
    My_Debug : constant not null GNATCOLL.Traces.Trace_Handle :=
      GNATCOLL.Traces.Create (Unit_Name => "OWM.CLIENT");
 
+   -----------------------------------------------------------------------------
+   --  Free
+   -----------------------------------------------------------------------------
    procedure Free is
      new Ada.Unchecked_Deallocation
        (Object => AWS.Client.HTTP_Connection,
@@ -24,9 +27,15 @@ package body Open_Weather_Map.Client is
 
    type T_Local_Access is access all T;
 
+   -----------------------------------------------------------------------------
+   --  Free
+   -----------------------------------------------------------------------------
    procedure Free is new Ada.Unchecked_Deallocation (Object => T,
                                                      Name   => T_Local_Access);
 
+   -----------------------------------------------------------------------------
+   --  Connection
+   -----------------------------------------------------------------------------
    function Connection
      (Self : in out T) return not null AWS.Client.HTTP_Connection_Access
    is
@@ -51,6 +60,9 @@ package body Open_Weather_Map.Client is
       return Self.HTTP_Connection;
    end Connection;
 
+   -----------------------------------------------------------------------------
+   --  Create
+   -----------------------------------------------------------------------------
    function Create
      (Configuration : in GNATCOLL.JSON.JSON_Value;
       Rate_Limit    : in Ada.Real_Time.Time_Span := Default_Rate_Limit) return T_Access
@@ -72,6 +84,9 @@ package body Open_Weather_Map.Client is
       end;
    end Create;
 
+   -----------------------------------------------------------------------------
+   --  Destroy
+   -----------------------------------------------------------------------------
    procedure Destroy (Self : in out T_Access) is
    begin
       if Self /= null then
@@ -80,6 +95,9 @@ package body Open_Weather_Map.Client is
       end if;
    end Destroy;
 
+   -----------------------------------------------------------------------------
+   --  Finalize
+   -----------------------------------------------------------------------------
    overriding procedure Finalize (Self : in out T) is
    begin
       My_Debug.all.Trace (Message => "Finalize");
@@ -87,6 +105,9 @@ package body Open_Weather_Map.Client is
       Free (Self.HTTP_Connection);
    end Finalize;
 
+   -----------------------------------------------------------------------------
+   --  Initialize
+   -----------------------------------------------------------------------------
    procedure Initialize
      (Self          :    out T;
       Configuration : in     GNATCOLL.JSON.JSON_Value;
@@ -97,6 +118,9 @@ package body Open_Weather_Map.Client is
       User            : Ada.Strings.Unbounded.Unbounded_String;
       Password        : Ada.Strings.Unbounded.Unbounded_String;
 
+      --------------------------------------------------------------------------
+      --  "+"
+      --------------------------------------------------------------------------
       function "+"
         (Source : in Ada.Strings.Unbounded.Unbounded_String) return String
          renames Ada.Strings.Unbounded.To_String;

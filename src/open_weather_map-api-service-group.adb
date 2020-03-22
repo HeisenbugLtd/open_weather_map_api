@@ -47,18 +47,27 @@ package body Open_Weather_Map.API.Service.Group is
       pragma Warnings (On, "declaration hides");
    end Field_Names;
 
+   -----------------------------------------------------------------------------
+   --  Decode_Response
+   -----------------------------------------------------------------------------
    overriding function Decode_Response
-     (Context : in T;
-      Root    : in GNATCOLL.JSON.JSON_Value) return Data_Set
+     (Self : in T;
+      Root : in GNATCOLL.JSON.JSON_Value) return Data_Set
    is
-      pragma Unreferenced (Context);
+      pragma Unreferenced (Self);
 
+      --------------------------------------------------------------------------
+      --  Decode_City_Data
+      --------------------------------------------------------------------------
       function Decode_City_Data
         (Element : in GNATCOLL.JSON.JSON_Value;
          Coord   : in GNATCOLL.JSON.JSON_Value;
          Main    : in GNATCOLL.JSON.JSON_Value;
          Sys     : in GNATCOLL.JSON.JSON_Value) return City_Data;
 
+      --------------------------------------------------------------------------
+      --  Decode_City_Data
+      --------------------------------------------------------------------------
       function Decode_City_Data
         (Element : in GNATCOLL.JSON.JSON_Value;
          Coord   : in GNATCOLL.JSON.JSON_Value;
@@ -173,8 +182,11 @@ package body Open_Weather_Map.API.Service.Group is
       return Invalid_Data_Set;
    end Decode_Response;
 
+   -----------------------------------------------------------------------------
+   --  Initialize
+   -----------------------------------------------------------------------------
    procedure Initialize
-     (Context            :    out   T;
+     (Self               :    out   T;
       Configuration      : in       GNATCOLL.JSON.JSON_Value;
       Connection         : not null Client.T_Access;
       Max_Cache_Interval : in       Ada.Real_Time.Time_Span := Default_Cache_Interval;
@@ -184,10 +196,10 @@ package body Open_Weather_Map.API.Service.Group is
    begin
       My_Debug.all.Trace (Message => "Initialize");
 
-      Service.T (Context).Initialize (Configuration      => Configuration,
-                                      Connection         => Connection,
-                                      Max_Cache_Interval => Max_Cache_Interval,
-                                      For_API_Service    => Current_By_Group);
+      Service.T (Self).Initialize (Configuration      => Configuration,
+                                   Connection         => Connection,
+                                   Max_Cache_Interval => Max_Cache_Interval,
+                                   For_API_Service    => Current_By_Group);
 
       for Id of Ids loop
          Ada.Strings.Unbounded.Append
@@ -201,8 +213,8 @@ package body Open_Weather_Map.API.Service.Group is
       Ada.Strings.Unbounded.Trim (Source => Id_List,
                                   Left   => Ada.Strings.Maps.Null_Set,
                                   Right  => Ada.Strings.Maps.To_Set (","));
-      Context.Parameters.Add (Name  => "id",
-                              Value => Ada.Strings.Unbounded.To_String (Id_List));
+      Self.Parameters.Add (Name  => "id",
+                           Value => Ada.Strings.Unbounded.To_String (Id_List));
    end Initialize;
 
 end Open_Weather_Map.API.Service.Group;

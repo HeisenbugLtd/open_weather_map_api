@@ -7,14 +7,18 @@
 --------------------------------------------------------------------------------
 pragma License (Unrestricted);
 
+limited with GNATCOLL.JSON;
+with Open_Weather_Map.Client;
+
 --------------------------------------------------------------------------------
---  Open_Weather_Map.API
+--% @summary
+--% Open_Weather_Map.API
+--% Publicly visible interface to the openweathermap.org API.
 --
---  Publicly visible interface to the openweathermap.org API.
---
---  Provides the abstract tagged type (i.e. interface) of what any derived API
---  query implementation will provide, and "constructor" subprograms to create
---  such query objects.
+--% @description
+--% Provides the abstract tagged type (i.e. interface) of what any derived API
+--% query implementation will provide, and "constructor" subprograms to create
+--% such query objects.
 --
 --  Query objects are immutable in the sense that, once constructed, they are
 --  responsible for exactly one specific API call.
@@ -26,10 +30,6 @@ pragma License (Unrestricted);
 --    different id or derive a new tagged type where the id can be changed
 --    during the life time of the object of that type.
 --------------------------------------------------------------------------------
-
-limited with GNATCOLL.JSON;
-with Open_Weather_Map.Client;
-
 package Open_Weather_Map.API is
 
    -----------------------------------------------------------------------------
@@ -42,13 +42,29 @@ package Open_Weather_Map.API is
 
    type API_Class_Access is not null access API_Class;
 
-   procedure Perform_Query (Context : in out T;
+   -----------------------------------------------------------------------------
+   --  Perform_Query
+   -----------------------------------------------------------------------------
+   procedure Perform_Query (Self    : in out T;
                             Current : in out Data_Set) is abstract;
-   --  Operation to fire and evaluate a query as defined by the actual type of
-   --  Context.
+   --% Operation to fire and evaluate a query as defined by the actual type of
+   --% client context Self.
+   --
+   --% @param Self
+   --% The client instance to perform the query.
+   --
+   --% @param Current
+   --% The data set being updated during the query.
 
-   function Last_Query (Context : in T) return Ada.Real_Time.Time is abstract;
-   --  Returns the time of the last query done with that context.
+   -----------------------------------------------------------------------------
+   --  Last_Query
+   -----------------------------------------------------------------------------
+   function Last_Query (Self : in T) return Ada.Real_Time.Time is abstract;
+   --% @param Self
+   --% The client instance.
+   --
+   --% @return
+   --% The time of the last query done with the client context This.
 
    -----------------------------------------------------------------------------
    --  Query object constructing subprograms
@@ -93,6 +109,9 @@ package Open_Weather_Map.API is
    --                  the connection given, and this parameter will be ignored.
    -----------------------------------------------------------------------------
 
+   -----------------------------------------------------------------------------
+   --  Create_Current_By_Coordinates
+   -----------------------------------------------------------------------------
    function Create_Current_By_Coordinates
      (Coordinates    : in Geo_Coordinates;
       Configuration  : in GNATCOLL.JSON.JSON_Value;
@@ -100,11 +119,34 @@ package Open_Weather_Map.API is
       Cache_Interval : in Ada.Real_Time.Time_Span := Default_Cache_Interval;
       Rate_Limit     : in Ada.Real_Time.Time_Span := Default_Rate_Limit)
       return API.API_Class;
-   --  Creates a current weather query context by coordinates.
-   --
+   --% Creates a current weather query context by coordinates.
    --  Translates to:
    --    api.openweathermap.org/data/2.5/weather?lat={Latitude}&lon={Longitude}
+   --
+   --% @param Coordinates
+   --% The geographical coordinates the API query shall be created for.
+   --
+   --% @param Configuration
+   --% Configuration object with connection configuration data.
+   --
+   --% @param Connection
+   --% The server connection to be re-used with this query if not null. If this
+   --% parameter is null, a new server connection will be created.
+   --
+   --% @param Cache_Interval
+   --% Amount of time previous queries are cached before a new query is sent to
+   --% the server.
+   --
+   --% @param Rate_Limit
+   --% Minimum time interval between queries. As this is specific to the
+   --% connection object, this only applies if the Connection parameter is null.
+   --
+   --% @return
+   --% An API query object for current weather data at given coordinates.
 
+   -----------------------------------------------------------------------------
+   --  Create_Current_By_Group
+   -----------------------------------------------------------------------------
    function Create_Current_By_Group
      (Ids            : in Group_List;
       Configuration  : in GNATCOLL.JSON.JSON_Value;
@@ -112,7 +154,7 @@ package Open_Weather_Map.API is
       Cache_Interval : in Ada.Real_Time.Time_Span := Default_Cache_Interval;
       Rate_Limit     : in Ada.Real_Time.Time_Span := Default_Rate_Limit)
       return API.API_Class;
-   --  Creates a current weather query context by city id.
+   ---% Creates a current weather query context by city id.
    --
    --  Translates to:
    --    api.openweathermap.org/data/2.5/group?id={Ids}
@@ -120,7 +162,32 @@ package Open_Weather_Map.API is
    --  Please be aware that while this only fires a single query, each member of
    --  the group still counts as one API call as far as rate limits are
    --  concerned.
+   --
+   --% @param Ids
+   --% The list of city ids to be queried.
+   --
+   --% @param Configuration
+   --% Configuration object with connection configuration data.
+   --
+   --% @param Connection
+   --% The server connection to be re-used with this query if not null. If this
+   --% parameter is null, a new server connection will be created.
+   --
+   --% @param Cache_Interval
+   --% Amount of time previous queries are cached before a new query is sent to
+   --% the server.
+   --
+   --% @param Rate_Limit
+   --% Minimum time interval between queries. As this is specific to the
+   --% connection object, this only applies if the Connection parameter is null.
+   --
+   --% @return
+   --% An API query object for current weather data for the given list of city
+   --% ids.
 
+   -----------------------------------------------------------------------------
+   --  Create_Current_By_Id
+   -----------------------------------------------------------------------------
    function Create_Current_By_Id
      (Id             : in City_Id;
       Configuration  : in GNATCOLL.JSON.JSON_Value;
@@ -128,10 +195,31 @@ package Open_Weather_Map.API is
       Cache_Interval : in Ada.Real_Time.Time_Span := Default_Cache_Interval;
       Rate_Limit     : in Ada.Real_Time.Time_Span := Default_Rate_Limit)
       return API.API_Class;
-   --  Creates a current weather query context by city id.
+   --% Creates a current weather query context by city id.
    --
    --  Translates to:
    --    api.openweathermap.org/data/2.5/weather?id={City_Id}
+   --
+   --% @param Id
+   --% The city id to be queried.
+   --
+   --% @param Configuration
+   --% Configuration object with connection configuration data.
+   --
+   --% @param Connection
+   --% The server connection to be re-used with this query if not null. If this
+   --% parameter is null, a new server connection will be created.
+   --
+   --% @param Cache_Interval
+   --% Amount of time previous queries are cached before a new query is sent to
+   --% the server.
+   --
+   --% @param Rate_Limit
+   --% Minimum time interval between queries. As this is specific to the
+   --% connection object, this only applies if the Connection parameter is null.
+   --
+   --% @return
+   --% An API query object for current weather data for the given city id.
 
 private
 

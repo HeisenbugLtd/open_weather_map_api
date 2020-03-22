@@ -23,6 +23,9 @@ package body Open_Weather_Map.API.Service.Utilities is
 
    end Field_Names;
 
+   -----------------------------------------------------------------------------
+   --  Decode_Coordinates
+   -----------------------------------------------------------------------------
    function Decode_Coordinates
      (Coordinates : in GNATCOLL.JSON.JSON_Value) return Geo_Coordinates
    is
@@ -41,6 +44,9 @@ package body Open_Weather_Map.API.Service.Utilities is
                               Field => Field_Names.Coordinates.Longitude));
    end Decode_Coordinates;
 
+   -----------------------------------------------------------------------------
+   --  Has_Coord_Fields
+   -----------------------------------------------------------------------------
    function Has_Coord_Fields
      (Coordinates : in GNATCOLL.JSON.JSON_Value) return Boolean is
    begin

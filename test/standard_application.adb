@@ -22,11 +22,23 @@ package body Standard_Application is
    LF : Character renames Ada.Characters.Latin_1.LF;
    Underline : constant String := Ada.Strings.Fixed."*" (79, '=') & LF;
 
+   -----------------------------------------------------------------------------
+   --  Binary_Image
+   -----------------------------------------------------------------------------
    function Binary_Image is
      new SI_Units.Binary.Image (Item        => GNATCOLL.Memory.Byte_Count,
                                 Default_Aft => 3,
                                 Unit        => "B");
 
+   -----------------------------------------------------------------------------
+   --  Epoch
+   -----------------------------------------------------------------------------
+   function Epoch (Self : in T) return Ada.Real_Time.Time is
+     (Self.Start_Time);
+
+   -----------------------------------------------------------------------------
+   --  Initialize
+   -----------------------------------------------------------------------------
    procedure Initialize (Self                  : in out T;
                          Cycle_Time            : in     Ada.Real_Time.Time_Span;
                          Application_Directory : in     String;
@@ -57,17 +69,30 @@ package body Standard_Application is
       Self.Report_Memory_Usage;
    end Initialize;
 
+   -----------------------------------------------------------------------------
+   --  Report_Memory_Usage
+   -----------------------------------------------------------------------------
    procedure Report_Memory_Usage (Self : in out T)
    is
       subtype Byte_Count is GNATCOLL.Memory.Byte_Count;
       use type Byte_Count;
 
+      --------------------------------------------------------------------------
+      --  Trim
+      --------------------------------------------------------------------------
       function Trim
         (Source : in String;
          Side   : in Ada.Strings.Trim_End := Ada.Strings.Left) return String
          renames Ada.Strings.Fixed.Trim;
 
+      --------------------------------------------------------------------------
+      --  Full_Image
+      --------------------------------------------------------------------------
       function Full_Image (Value : in Byte_Count) return String;
+
+      --------------------------------------------------------------------------
+      --  Full_Image
+      --------------------------------------------------------------------------
       function Full_Image (Value : in Byte_Count) return String is
         (Trim (Value'Image) & " [" & Binary_Image (Value) & "]");
 
@@ -98,6 +123,9 @@ package body Standard_Application is
       end if;
    end Report_Memory_Usage;
 
+   -----------------------------------------------------------------------------
+   --  Run
+   -----------------------------------------------------------------------------
    procedure Run (Self : in out T)
    is
       use type Ada.Real_Time.Time;
@@ -120,9 +148,9 @@ package body Standard_Application is
       end loop Main_Loop;
    end Run;
 
-   function Epoch (Self : in T) return Ada.Real_Time.Time is
-     (Self.Start_Time);
-
+   -----------------------------------------------------------------------------
+   --  Shutdown
+   -----------------------------------------------------------------------------
    procedure Shutdown (Self : in out T) is
    begin
       My_Debug.all.Trace (Message => "Shutdown");

@@ -8,11 +8,12 @@
 pragma License (Unrestricted);
 
 --------------------------------------------------------------------------------
---  Open_Weather_Map.API.Service.Weather
+--% @summary
+--% Open_Weather_Map.API.Service.Weather
 --
---  Provides the query object implementing a specific id based based query.
+--% @description
+--% Provides the query object implementing a single id based query.
 --------------------------------------------------------------------------------
-
 package Open_Weather_Map.API.Service.Weather is
 
    -----------------------------------------------------------------------------
@@ -20,23 +21,53 @@ package Open_Weather_Map.API.Service.Weather is
    -----------------------------------------------------------------------------
    type T is new Service.T with private;
 
+   -----------------------------------------------------------------------------
+   --  Initialize
+   -----------------------------------------------------------------------------
    procedure Initialize
-     (Context            :    out   T;
+     (Self               :    out   T;
       Configuration      : in       GNATCOLL.JSON.JSON_Value;
       Connection         : not null Client.T_Access;
       Max_Cache_Interval : in       Ada.Real_Time.Time_Span := Default_Cache_Interval;
       Id                 : in       City_Id);
-   --  Initializes Context according to the given Configuration object, using
-   --  the given Connection for server queries that will be fired at least
-   --  Max_Cache_Interval apart.
-   --  Id is the location id of the place to be queried.
+   --% Initializes an instance of a single query.
+   --
+   --% @param Self
+   --% Instance of the single query to initialize.
+   --
+   --% @param Configuration
+   --% Configuration data object containing connection relevant data (proxy
+   --% server, API key, etc.).
+   --
+   --% @param Connection
+   --% The connection to be used for client server communication.
+   --
+   --% @param Max_Cache_Interval
+   --% Denotes the maximum frequency at which actual queries are being sent to
+   --% the server.
+   --
+   --% @param Id
+   --% Location id of the place to be queried.
 
 private
 
    type T is new API. Service.T with null record;
 
+   -----------------------------------------------------------------------------
+   --  Decode_Response
+   -----------------------------------------------------------------------------
    overriding function Decode_Response
-     (Context : in T;
-      Root    : in GNATCOLL.JSON.JSON_Value) return Data_Set;
+     (Self : in T;
+      Root : in GNATCOLL.JSON.JSON_Value) return Data_Set;
+   --% Decodes a single query response from the server.
+   --
+   --% @param Self
+   --% The single query instance.
+   --
+   --% @param Root
+   --% Root of the JSON data sent back by the server.
+   --
+   --% @return
+   --% The data set decoded from the response in Root.
 
 end Open_Weather_Map.API.Service.Weather;
